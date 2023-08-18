@@ -17,7 +17,6 @@ const PedidosSchema = new mongoose.Schema({
     data: Date,
     compras: [PizzasPedidasSchema],
     acompanhamento: [Acrescimo],
-    valorCompra: Number
   });
 
 

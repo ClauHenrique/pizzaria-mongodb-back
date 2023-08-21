@@ -28,7 +28,7 @@ export const montarPedido = async (req, res) => {
             "acompanhamento": [
                 {
                     "nomeProd": "NOME DE UM PRODUTO QUALQUER",
-                    "Valor": Number
+                    "Valor": "Number"
                 },
             ]
         }
@@ -36,5 +36,73 @@ export const montarPedido = async (req, res) => {
             msg: "o corpo da requisicao deve ser no seguinto formato: ",
             body
         })
+    }
+}
+
+export const listarPedidos = async (req, res) => {
+    try {
+        const data = await Pedidos.find()
+
+        return res.status(200).json(data)
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json("erro no servidor")
+    }
+}
+
+export const pesquisarPedidoCliente = async (req, res) => {
+    try {
+        const name = req.params.nameClient
+
+        const data = await Pedidos.find({nomeCliente: name})
+
+        const count = await Pedidos.find({nomeCliente: name}).countDocuments()
+
+        data.push({totalPedidos: count})
+
+
+        return res.status(200).json(data)
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json("erro no servidor")
+    }
+}
+
+export const atualizarPedidoCliente = async (req, res) => {
+    try {
+        const id = req.params.id
+        const body = req.body
+
+        const data = await Pedidos.updateOne({_id: id}, body)
+        
+        if (data.modifiedCount <= 0) {
+            return res.status(404).json("id nao encontrado")            
+        }     
+
+        return res.status(200).json("pedido atualizado")
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json("erro no servidor")
+    }
+}
+
+export const deletarPedidoCliente = async (req, res) => {
+    try {
+        const id = req.params.id
+
+        const data = await Pedidos.deleteOne({_id: id})
+
+        if (data.deletedCount <= 0) {
+            return res.status(404).json("id nao encontrado")            
+        }     
+
+        return res.status(200).json("pedido deletado")
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json("erro no servidor")
     }
 }

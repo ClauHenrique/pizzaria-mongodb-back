@@ -39,6 +39,23 @@ export const montarPedido = async (req, res) => {
     }
 }
 
+export const finalizarPedidos = async (req, res) => {
+    try {
+        const id = req.params.id
+        const data = await Pedidos.updateMany({_id: id}, {finalizado: true})
+
+        if (data.modifiedCount <= 0) {
+            return res.status(404).json("id nao encontrado")            
+        }
+
+        return res.status(200).json("pedido finalizado")
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json("erro no servidor")
+    }
+}
+
 export const listarPedidos = async (req, res) => {
     try {
         const data = await Pedidos.find()
@@ -80,7 +97,7 @@ export const atualizarPedidoCliente = async (req, res) => {
         if (data.modifiedCount <= 0) {
             return res.status(404).json("id nao encontrado")            
         }     
-
+      
         return res.status(200).json("pedido atualizado")
     }
     catch (err) {

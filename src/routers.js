@@ -16,7 +16,8 @@ import {
     listarPedidos,
     pesquisarPedidoCliente,
     atualizarPedidoCliente,
-    deletarPedidoCliente
+    deletarPedidoCliente,
+    finalizarPedidos
  } from '../controllers/pedidoController.js'
 
 const router = Express.Router()
@@ -37,6 +38,9 @@ router.get('/listarPizzas', listarPizzas)
 
 
 router.post('/montarPedido', montarPedido)
+// quando o cliente paga seu pedido, o pedido é finalizado. 
+// Mas o pedido ainda ficará salvo como historico. Atualizamos apenas o valor do campo finalizado como true
+router.put('/finalizarPedido/:id', finalizarPedidos)
 router.get('/listarPedidos', listarPedidos)
 router.get('/pesquisarPedido/:nameClient', pesquisarPedidoCliente)
 router.put('/atualizarPedido/:id', atualizarPedidoCliente)
